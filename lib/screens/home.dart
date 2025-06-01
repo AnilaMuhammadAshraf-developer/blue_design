@@ -1,3 +1,4 @@
+import 'package:blue_design/utils/app_assets.dart';
 import 'package:blue_design/utils/app_colors.dart';
 import 'package:blue_design/utils/app_font_style.dart';
 import 'package:blue_design/utils/app_strings.dart';
@@ -11,6 +12,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _showImagesType = 1;
+  int _selectedIndex = 0;
+  final List<Map<String, dynamic>> _pages = [
+    {'title': "Home", "icon": Icon(Icons.home), "page": HomeScreen()},
+    {'title': "Favourite", "icon": Icon(Icons.favorite), "page": HomeScreen()},
+    {
+      'title': "Shopping",
+      "icon": Icon(Icons.shopping_bag),
+      "page": HomeScreen(),
+    },
+    {'title': "Profile", "icon": Icon(Icons.person), "page": HomeScreen()},
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,44 +63,89 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                customContainer(
-                  AppColors.boxBlueColor,
-                  "assets/images/PK.png",
-                  AppStrings.countryPakistan,
+                GestureDetector(
+                  onTap: () {
+                    debugPrint("show images hongi is click s ");
+                  },
+                  child: customContainer(
+                    AppColors.boxBlueColor,
+                    AppAssets.pkImage,
+                    AppStrings.countryPakistan,
+                  ),
+                ),
+
+                SizedBox(width: 5),
+                GestureDetector(
+                  onTap: () {
+                    debugPrint("show images hongi is click s ");
+                  },
+                  child: customContainer(
+                    AppColors.boxPinkColor,
+                    AppAssets.chinaImage,
+                    AppStrings.countryChina,
+                  ),
                 ),
                 SizedBox(width: 5),
-                customContainer(
-                  AppColors.boxPinkColor,
-                  "assets/images/C.png",
-                  AppStrings.countryChina,
+                GestureDetector(
+                  onTap: () {
+                    debugPrint("show images hongi is click s ");
+                  },
+                  child: customContainer(
+                    AppColors.boxOrangeColor,
+                    AppAssets.canadaImage,
+                    AppStrings.countryCanada,
+                  ),
                 ),
                 SizedBox(width: 5),
-                customContainer(
-                  AppColors.boxOrangeColor,
-                  "assets/images/CD.jpg",
-                  AppStrings.countryCanada,
-                ),
-                SizedBox(width: 5),
-                customContainer(
-                  AppColors.boxPurpleColor,
-                  "assets/images/AU.png",
-                  AppStrings.countryAustrailia,
+                GestureDetector(
+                  onTap: () {
+                    debugPrint("show images hongi is click s ");
+                  },
+                  child: customContainer(
+                    AppColors.boxPurpleColor,
+                    AppAssets.australiaImage,
+                    AppStrings.countryAustrailia,
+                  ),
                 ),
               ],
             ),
           ),
-          SizedBox(height:20),
-          Row(children: [
-             Padding(padding: EdgeInsets.only(left:10),
-            child:Text(AppStrings.bestDestinationText,style:AppFontStyle.boldNormalText)
-            ),
-           
-            Spacer(),
-            Padding(padding: EdgeInsets.only(right:10),
-            child:Text(AppStrings.seeAllText)
-            )
-          ],)
+          SizedBox(height: 20),
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Text(
+                  AppStrings.bestDestinationText,
+                  style: AppFontStyle.boldNormalText,
+                ),
+              ),
+
+              Spacer(),
+              Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Text(AppStrings.seeAllText),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          SingleChildScrollView(child: showImagesContainer(_showImagesType)),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() => {_selectedIndex = index});
+        },
+        unselectedItemColor: AppColors.textColorBlack,
+        selectedItemColor: Colors.black,
+       
+        items: List.generate(_pages.length, (index) {
+          return BottomNavigationBarItem(
+            icon: _pages[index]['icon'],
+            label: _pages[index]['title'],
+          );
+        }),
       ),
     );
   }
@@ -112,6 +170,29 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(height: 10),
           Text(label, style: AppFontStyle.boldSmallText),
         ],
+      ),
+    );
+  }
+
+  Widget showImagesContainer(type) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 260,
+      decoration: BoxDecoration(color: Colors.white),
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(4, (index) {
+          return Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(AppAssets.pkImages[index], fit: BoxFit.cover),
+            ),
+          );
+        }),
       ),
     );
   }
