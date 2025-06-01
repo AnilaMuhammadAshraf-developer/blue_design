@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _showImagesType = 1;
   int _selectedIndex = 0;
+ 
   final List<Map<String, dynamic>> _pages = [
     {'title': "Home", "icon": Icon(Icons.home), "page": HomeScreen()},
     {'title': "Favourite", "icon": Icon(Icons.favorite), "page": HomeScreen()},
@@ -25,7 +26,23 @@ class _HomeScreenState extends State<HomeScreen> {
     {'title': "Profile", "icon": Icon(Icons.person), "page": HomeScreen()},
   ];
   @override
+  void initState(){
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+     List<String> currentImages;
+      if (_showImagesType == 1) {
+    currentImages = AppAssets.pkImages;
+  } else if (_showImagesType == 2) {
+    currentImages = AppAssets.chinaImages;
+  } else if (_showImagesType == 3) {
+    currentImages = AppAssets.canadaImages;
+  } else if (_showImagesType == 4) {
+    currentImages = AppAssets.australiaImages;
+  } else {
+    currentImages = [];
+  }
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -65,7 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    debugPrint("show images hongi is click s ");
+               
+                   setState(() {
+                     _showImagesType=1;
+                   });
+                        debugPrint("show images $_showImagesType ");
                   },
                   child: customContainer(
                     AppColors.boxBlueColor,
@@ -77,7 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
-                    debugPrint("show images hongi is click s ");
+                       setState(() {
+                     _showImagesType=2;
+                   });
+                    debugPrint("show images $_showImagesType");
                   },
                   child: customContainer(
                     AppColors.boxPinkColor,
@@ -88,7 +112,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
-                    debugPrint("show images hongi is click s ");
+                       setState(() {
+                     _showImagesType=3;
+                   });
+                    debugPrint("show images $_showImagesType ");
                   },
                   child: customContainer(
                     AppColors.boxOrangeColor,
@@ -99,7 +126,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
-                    debugPrint("show images hongi is click s ");
+                     setState(() {
+                     _showImagesType=4;
+                   });
+                    debugPrint("show images $_showImagesType ");
                   },
                   child: customContainer(
                     AppColors.boxPurpleColor,
@@ -129,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           SizedBox(height: 10),
-          SingleChildScrollView(child: showImagesContainer(_showImagesType)),
+          SingleChildScrollView(child: showImagesContainer(currentImages)),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -174,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget showImagesContainer(type) {
+  Widget showImagesContainer(currentImages) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 260,
@@ -182,6 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: GridView.count(
         crossAxisCount: 2,
         children: List.generate(4, (index) {
+          
           return Card(
             elevation: 4,
             shape: RoundedRectangleBorder(
@@ -189,7 +220,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(AppAssets.pkImages[index], fit: BoxFit.cover),
+             
+              child: Image.asset(
+  
+                currentImages[index], fit: BoxFit.cover),
+        
             ),
           );
         }),
